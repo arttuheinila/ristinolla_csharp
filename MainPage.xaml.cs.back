@@ -1,0 +1,105 @@
+﻿using System.Collections.ObjectModel;
+using System.Text.Json;
+
+namespace ristinolla;
+
+public partial class MainPage : ContentPage
+{
+
+    public ObservableCollection<PersonInfo> People { get; set; }
+	public PersonInfo ComputerStats { get; set; } = new PersonInfo("Tietokone", "", "");
+    public MainPage()
+	{
+		InitializeComponent();
+        People = new ObservableCollection<PersonInfo>();
+        BindingContext = this;
+
+		//Load players from the saved file
+		LoadFromFile();
+		EnsureComputer();
+	}
+
+	//Ensure there is computer as a persistent entry
+	void EnsureComputer()
+	{	
+		if (!People.Any(p => p.Etunimi == "Tietokone"))
+		{
+			var computer = new PersonInfo("Tietokone", "", "");
+			People.Add(computer);
+			_ = SaveToFileAsync(); 
+		}		
+	}
+
+	// Handle button click
+	private async void OnAddInfoClicked(object sender, EventArgs e)
+	{
+		//Read fields
+		string etunimi = EtunimiEntry.Text;
+		string sukunimi = SukunimiEntry.Text;
+		string syntymavuosi = SyntymavuosiEntry.Text;
+	
+		//Validate and force user to input something to all entry fields
+		if (string.IsNullOrWhiteSpace(etunimi) ||
+        string.IsNullOrWhiteSpace(sukunimi) ||
+        string.IsNullOrWhiteSpace(syntymavuosi))
+		{
+			await DisplayAlert(
+				"Täytä kaikki kentät",
+				"Etunimi, sukunimi ja syntymävuosi ovat pakollisia.",
+				"OK");
+			return;
+		}
+
+		// Add fields to list
+		var newPerson = new PersonInfo(etunimi, sukunimi, syntymavuosi);
+		People.Add(newPerson);
+
+		// Save updated list
+		await SaveToFileAsync();
+	}
+
+	public async Task SaveToFileAsync()
+	{
+		// Filepath
+        string filePath = Path.Combine(FileSystem.AppDataDirectory, "persons.json");
+		var options = new JsonSerializerOptions { WriteIndented = true };
+		string json = JsonSerializer.Serialize(People.ToList(), options);
+
+		// Save new file
+		await File.WriteAllTextAsync(filePath, json);
+	}
+
+	void LoadFromFile()
+	{
+        string filePath = Path.Combine(FileSystem.AppDataDirectory, "persons.json");
+		// Return empty if no player file saved
+		if (!File.Exists(filePath))
+			return;
+		
+		string json = File.ReadAllText(filePath);
+		var list = JsonSerializer.Deserialize<List<PersonInfo>>(json) ?? new List<PersonInfo>();
+			
+		//Clear out old
+		People.Clear();
+		foreach (var p in list)
+			People.Add(p);
+	}
+
+	//Item selection
+	private async void OnPlayer1Tapped(object sender, ItemTappedEventArgs e)
+	{
+		if (e.Item is not PersonInfo player1)
+			return;
+		await Navigation.PushAsync(new Player2Page(player1));
+	}
+
+    // Reload players for updated stats after a game
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+		//Reload from file
+		LoadFromFile();
+		EnsureComputer();
+    }
+}
+

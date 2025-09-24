@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="ristinolla.TurnSelectionPage"
+    Title="Kuka aloittaa?">
+
+  <StackLayout Padding="20" Spacing="15" VerticalOptions="Center">
+    <Label Text="Valitse aloittaja" 
+           HorizontalOptions="Center" 
+           FontSize="Large"/>
+    <Button Text="Player 1" Clicked="OnPlayer1Clicked" WidthRequest="100"/>
+    <Button Text="Player 2" Clicked="OnPlayer2Clicked" WidthRequest="100" />
+    <Button Text="Random" Clicked="OnRandomClicked" WidthRequest="100" />
+  </StackLayout>
+</ContentPage>

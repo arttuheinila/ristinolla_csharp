@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="ristinolla.GamePage"
+    Title="Ristinolla">
+
+  <StackLayout Padding="20" Spacing="15">
+    <!-- Show chosen players -->
+    <Label
+      x:Name="Player1Label"
+      FontSize="Medium" />
+    <Label
+      Text="VS"
+      FontSize="Medium"
+      />
+    <Label
+      x:Name="Player2Label"
+      FontSize="Medium" />
+    <!-- Display whose turn it is -->
+    <Label x:Name="CurrentTurnLabel" 
+            FontSize="Medium" 
+            HorizontalOptions="Center"
+            Margin="0,10"/>
+
+      <VerticalStackLayout
+        HorizontalOptions="Center"
+        VerticalOptions="CenterAndExpand">
+
+        <Grid x:Name="BoardGrid"
+                RowSpacing="2"
+                ColumnSpacing="2"
+                >
+
+            <Grid.RowDefinitions>
+              <RowDefinition Height="100" />
+              <RowDefinition Height="100" />
+              <RowDefinition Height="100" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="100" />
+              <ColumnDefinition Width="100" />
+              <ColumnDefinition Width="100" />
+            </Grid.ColumnDefinitions>
+          </Grid>
+      </VerticalStackLayout>
+
+      <Button x:Name="BackButton"
+        Text="Palaa alkuun"
+        IsVisible="False"
+        Clicked="OnBackButtonClicked"
+        WidthRequest="200" />
+  </StackLayout>
+</ContentPage>

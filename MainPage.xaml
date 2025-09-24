@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ristinolla.MainPage"
+             Title="Ristinolla">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Spacing="25"
+            Padding="30,0"
+            VerticalOptions="Center">
+
+        <Label Text="Tervetuloa pelaamaan ristinollaa!"
+            FontSize="24"
+            HorizontalOptions="Center"/>
+
+        <Label Text="Valitse Pelaaja 1 tai lisää uusi pelaaja syöttämällä tiedot kenttään"
+            FontSize="24"
+            HorizontalOptions="Center"/>
+
+        
+        <Grid ColumnDefinitions="210,205,200,100,100,100,100" Margin="0,0,0,5">
+            <Label Text="Etunimi"     Grid.Column="0" FontAttributes="Bold"/>
+            <Label Text="Sukunimi"    Grid.Column="1" FontAttributes="Bold"/>
+            <Label Text="Syntymävuosi"  Grid.Column="2" FontAttributes="Bold"/>
+            <Label Text="Voitot"      Grid.Column="3" FontAttributes="Bold"/>
+            <Label Text="Häviöt"      Grid.Column="4" FontAttributes="Bold"/>
+            <Label Text="Tasapelit"   Grid.Column="5" FontAttributes="Bold"/>
+            <Label Text="Peliaika"   Grid.Column="6" FontAttributes="Bold"/>
+        </Grid>
+
+        <Border StrokeThickness="1" Stroke="LightGreen" StrokeShape="RoundRectangle 40,40,40,40">
+            <ListView x:Name="PlayerListView" ItemsSource="{Binding People}" ItemTapped="OnPlayer1Tapped" SelectionMode="None">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Border Padding="15">
+                                    <StackLayout>
+                                        <HorizontalStackLayout>
+                                            <Label Text="{Binding Etunimi}" WidthRequest="200"/>
+                                            <Label Text="{Binding Sukunimi}" WidthRequest="200"/>
+                                            <Label Text="{Binding Syntymavuosi}" WidthRequest="200"/>
+                                            <Label Text="{Binding Wins, StringFormat='Voitot: {0}'}" WidthRequest="100"/>
+                                            <Label Text="{Binding Losses, StringFormat='Häviöt: {0}'}" WidthRequest="100"/>
+                                            <Label Text="{Binding Draws, StringFormat='Tasapelit: {0}'}" WidthRequest="100"/>
+                                            <Label Text="{Binding PlayTimeFormatted}" WidthRequest="100" />
+                                        </HorizontalStackLayout>
+                                    </StackLayout>
+                                </Border>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+            </ListView>
+        </Border>
+
+        <Border Stroke="LightGreen" StrokeThickness="1" Padding="15" StrokeShape="RoundRectangle 40,40,40,40">
+            <Grid ColumnDefinitions="200,200,200,100,100,100,100">
+                <Label Text="Tietokone" Grid.Column="0" />
+                <Label Text="{Binding ComputerStats.Wins,    StringFormat='Voitot: {0}'}"   Grid.Column="3"/>
+                <Label Text="{Binding ComputerStats.Losses, StringFormat='Häviöt: {0}'}"   Grid.Column="4"/>
+                <Label Text="{Binding ComputerStats.Draws,  StringFormat='Tasapelit: {0}'}" Grid.Column="5"/>
+                <Label Text="{Binding ComputerStats.PlayTimeFormatted}" Grid.Column="6" />
+            </Grid>
+        </Border>
+
+        <Label Text="Lisää uusi pelaaja!"
+            FontSize="24" />
+
+        <HorizontalStackLayout Spacing="10">
+        <Label
+            Text="Etunimi" WidthRequest="100" />
+            <Entry x:Name="EtunimiEntry" Placeholder="Etunimi" WidthRequest="200" />
+        </HorizontalStackLayout>
+        
+        <HorizontalStackLayout Spacing="10">
+        <Label
+            Text="Sukunimi" WidthRequest="100" />
+            <Entry x:Name="SukunimiEntry" Placeholder="Sukunimi" WidthRequest="200" />
+        </HorizontalStackLayout>  
+
+        <HorizontalStackLayout Spacing="10">
+        <Label
+            Text="Syntymavuosi" WidthRequest="100" />
+            <Entry x:Name="SyntymavuosiEntry" Placeholder="vvvv" WidthRequest="200"/>
+        </HorizontalStackLayout>
+
+        <HorizontalStackLayout Spacing="10">             
+        <Label WidthRequest="100"></Label>
+        <Button Text="Lisää tiedot listaan" Clicked="OnAddInfoClicked" WidthRequest="200" />
+        </HorizontalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
